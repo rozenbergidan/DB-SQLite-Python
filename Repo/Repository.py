@@ -2,16 +2,17 @@ import sqlite3
 from PersistanceLayer.ClinicDAO import _ClinicDAO
 from PersistanceLayer.LogisticDAO import _LogisticDAO
 from PersistanceLayer.SupplierDAO import _SupplierDAO
-from PersistanceLayer.Vaccines import _Vaccines
-
+from PersistanceLayer.VaccineDAO import _VaccineDAO
+from ApplicationLayer.LogisticDTO import LogisticDTO
+from ApplicationLayer.ClinicDTO import ClinicDTO
 
 class _Repository:
     def __init__(self):
         self._conn = sqlite3.connect(".\\database.db")
         self.clean()
-        # self.create_tables()
-        # self.get_config_file("config.txt")
-        self.get_orders_file("orders.txt")
+        self.create_tables()
+        self.get_config_file("config.txt")
+        # self.get_orders_file("orders.txt")
 
     def clean(self):
         cur = self._conn.cursor()
@@ -66,18 +67,23 @@ class _Repository:
 
 
             for line in rows[logistics[0]:1+logistics[1]]:
+                data = line.split(",")
+                log = LogisticDTO(data[0],data[1],data[2],data[3])
                 logDao = _LogisticDAO(self._conn)
-                logDao.insert(line.split(","))
+                logDao.insert(log)
 
             for line in rows[clinics[0]:1+clinics[1]]:
+                data = line.split(",")
+                clnc = ClinicDTO(data[0], data[1], data[2], data[3])
                 clinDao = _ClinicDAO(self._conn)
-                clinDao.insert(line.split(","))
+                clinDao.insert(clnc)
 
             for line in rows[suppliers[0]:1+suppliers[1]]:
                 supDao = _SupplierDAO(self._conn)
                 supDao.insert(line.split(","))
+
             for line in rows[vaccines[0]:1+vaccines[1]]:
-                vacDao = _Vaccines(self._conn)
+                vacDao = _VaccineDAO(self._conn)
                 vacDao.insert(line.split(","))
 
             pass

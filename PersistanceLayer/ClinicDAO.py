@@ -10,11 +10,11 @@ class _ClinicDAO:
         cur.execute("""SELECT * FROM clinics where id = ? """, (int(clinic_id)))
         return list(cur.fetchone())
 
-    def insert(self, args):
+    def insert(self, clinicDTO):
         try:
-            print(args)
+            print(clinicDTO)
             cur = self._conn.cursor()
-            cur.execute("""INSERT INTO clinics (id, location, demand, logistic) VALUES (?,?,?,?)""", (str(args[0]), str(args[1]), str(args[2]), str(args[3])))
+            cur.execute("""INSERT INTO clinics (id, location, demand, logistic) VALUES (?,?,?,?)""", (clinicDTO.id, clinicDTO.location, clinicDTO.demand, clinicDTO.logistic))
             self._conn.commit()
         except sqlite3.Error:
             print("error in clinic")
