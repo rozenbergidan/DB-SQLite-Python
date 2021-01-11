@@ -1,4 +1,7 @@
 import sqlite3
+from PersistanceLayer.Vaccines import _Vaccines
+from PersistanceLayer.LogisticDAO import _LogisticDAO
+from PersistanceLayer.Vaccines import _Vaccines
 
 
 class _Repository:
@@ -57,18 +60,19 @@ class _Repository:
             print(clinics)
             print(logistics)
 
+            for line in rows[logistics[0]:1+logistics[1]]:
+                logDao = _LogisticDAO()
+                logDao.insert(line.split(","))
+
             for line in rows[vaccines[0]:1+vaccines[1]]:
-                vacDao = VaccineDAO()
-                vacDao.insert_vaccine(line.split(","))
+                vac = _Vaccines(self._conn)
+                vac.insert(line.split(","))
             for line in rows[suppliers[0]:1+suppliers[1]]:
                 supDao = SupplierDAO()
                 supDao.insert_supplier(line.split(","))
             for line in rows[clinics[0]:1+clinics[1]]:
                 clinDao = ClinicDAO()
                 clinDao.insert_clinic(line.split(","))
-            for line in rows[logistics[0]:1+logistics[1]]:
-                logDao = LogistcDAO()
-                logDao.insert_logistic(line.split(","))
 
             pass
 
