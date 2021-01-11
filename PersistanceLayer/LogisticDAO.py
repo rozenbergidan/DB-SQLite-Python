@@ -1,7 +1,17 @@
 import sqlite3
 
 
-class _LogisticDAO:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class _LogisticDAO(metaclass=Singleton):
+
     def __init__(self, conn):
         self._conn = conn
 
@@ -17,4 +27,10 @@ class _LogisticDAO:
             self._conn.commit()
         except sqlite3.Error:
             print("error in logistic")
+    pass
+
+    def update(self, logisticDTO):
+        cur = self._conn.cursor()
+        cur.execute("""UPDATE logistics SET count_received = (?) WHERE id = (?)""", (logisticDTO.count_received, logisticDTO.id))
+        self._conn.commit()
     pass

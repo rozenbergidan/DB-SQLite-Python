@@ -3,11 +3,12 @@ from PersistanceLayer.ClinicDAO import _ClinicDAO
 from PersistanceLayer.LogisticDAO import _LogisticDAO
 from PersistanceLayer.SupplierDAO import _SupplierDAO
 from PersistanceLayer.VaccineDAO import _VaccineDAO
-
 from ApplicationLayer.LogisticDTO import LogisticDTO
 from ApplicationLayer.ClinicDTO import ClinicDTO
 from ApplicationLayer.SupplierDTO import SupplierDTO
 from ApplicationLayer.VaccineDTO import VaccineDTO
+
+
 class _Repository:
     def __init__(self):
         self._conn = sqlite3.connect(".\\database.db")
