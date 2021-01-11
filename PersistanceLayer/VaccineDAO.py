@@ -5,12 +5,10 @@ class _VaccineDAO:
         self._conn = conn
 
 
-    def insert(self, args):
+    def insert(self, vaccineDTO):
         try:
-            print(args)
             cur = self._conn.cursor()
-            cur.execute("""INSERT INTO vaccines (id, date, supplier, quantity) VALUES (?, ?, ?, ?)""",
-                        (str(args[0]), str(args[1]), str(args[2]), str(args[3])))
+            cur.execute("""INSERT INTO vaccines (id, date, supplier, quantity) VALUES (?, ?, ?, ?)""", (vaccineDTO.id, vaccineDTO.date, vaccineDTO.supplier, vaccineDTO.quantity))
             self._conn.commit()
         except sqlite3.Error:
             print("error in vaccines")

@@ -12,7 +12,6 @@ class _ClinicDAO:
 
     def insert(self, clinicDTO):
         try:
-            print(clinicDTO)
             cur = self._conn.cursor()
             cur.execute("""INSERT INTO clinics (id, location, demand, logistic) VALUES (?,?,?,?)""", (clinicDTO.id, clinicDTO.location, clinicDTO.demand, clinicDTO.logistic))
             self._conn.commit()

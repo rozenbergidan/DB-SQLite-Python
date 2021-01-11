@@ -1,5 +1,5 @@
-class Supplier:
+class SupplierDTO:
     def __init__(self, idd, name, logistic):
-        self.idd = idd
+        self.id = idd
         self.name = name
         self.logistic = logistic

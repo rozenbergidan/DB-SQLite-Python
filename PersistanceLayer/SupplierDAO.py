@@ -10,12 +10,12 @@ class _SupplierDAO:
         cur.execute("""SELECT * FROM suppliers where id = ? """, (int(supplier_id)))
         return list(cur.fetchone())
 
-    def insert(self, args):
-        # try:
-            print(args)
+    def insert(self, supplierDTO):
+        try:
             cur = self._conn.cursor()
-            cur.execute("""INSERT INTO suppliers (id, name, logistic) VALUES (?,?,?)""", (str(args[0]), str(args[1]), str(args[2])))
+            cur.execute("""INSERT INTO suppliers (id, name, logistic) VALUES (?,?,?)""", (supplierDTO.id, supplierDTO.name, supplierDTO.logistic))
             self._conn.commit()
-        # except sqlite3.Error:
-        #     print("error in supplier")
+        except sqlite3.Error:
+            print("error in supplier")
+
     pass

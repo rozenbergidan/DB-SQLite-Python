@@ -12,7 +12,6 @@ class _LogisticDAO:
 
     def insert(self, logisticDTO):
         try:
-            print(logisticDTO)
             cur = self._conn.cursor()
             cur.execute("""INSERT INTO logistics (id, name, count_sent, count_received) VALUES (?,?,?,?)""", (logisticDTO.id, logisticDTO.name, logisticDTO.count_sent, logisticDTO.count_received))
             self._conn.commit()
