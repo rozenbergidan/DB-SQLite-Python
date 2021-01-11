@@ -15,7 +15,7 @@ class _LogisticDAO(metaclass=Singleton):
     def __init__(self, conn):
         self._conn = conn
 
-    def get_logistic(self, logistic_id):
+    def find(self, logistic_id):
         cur = self._conn.cursor()
         cur.execute("""SELECT * FROM logistics where id = ? """, (int(logistic_id)))
         return list(cur.fetchone())
@@ -29,8 +29,14 @@ class _LogisticDAO(metaclass=Singleton):
             print("error in logistic")
     pass
 
-    def update(self, logisticDTO):
+    def update_received(self, logisticDTO):
         cur = self._conn.cursor()
         cur.execute("""UPDATE logistics SET count_received = (?) WHERE id = (?)""", (logisticDTO.count_received, logisticDTO.id))
+        self._conn.commit()
+    pass
+
+    def update_sent(self, logisticDTO):
+        cur = self._conn.cursor()
+        cur.execute("""UPDATE logistics SET count_sent = (?) WHERE id = (?)""", (logisticDTO.count_sent, logisticDTO.id))
         self._conn.commit()
     pass

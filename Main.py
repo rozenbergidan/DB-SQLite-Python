@@ -5,5 +5,5 @@ import datetime
 
 if __name__ == '__main__':
         ses = Session()
-        ses.load_data()
         ses.run()
+

@@ -14,6 +14,11 @@ class _VaccineDAO(metaclass=Singleton):
         self._conn = conn
 
 
+    def find(self, vaccine_id):
+        cur = self._conn.cursor()
+        cur.execute("""SELECT * FROM vaccines where id = ? """, (int(vaccine_id)))
+        return list(cur.fetchone())
+
     def insert(self, vaccineDTO):
         try:
             cur = self._conn.cursor()
@@ -21,4 +26,17 @@ class _VaccineDAO(metaclass=Singleton):
             self._conn.commit()
         except sqlite3.Error:
             print("error in vaccines")
+    pass
+
+    def update(self, vaccineDTO):
+        cur = self._conn.cursor()
+        cur.execute("""UPDATE vaccines SET quantity = (?) WHERE id = (?)""",
+                    (vaccineDTO.quantity, vaccineDTO.id))
+        self._conn.commit()
+    pass
+
+    def delete(self, vaccineDTO):
+        cur = self._conn.cursor()
+        cur.execute("""DELETE FROM vaccines WHERE id = (?)""",(vaccineDTO.id))
+        self._conn.commit()
     pass

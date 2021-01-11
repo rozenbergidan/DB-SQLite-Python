@@ -9,7 +9,16 @@ from ApplicationLayer.SupplierDTO import SupplierDTO
 from ApplicationLayer.VaccineDTO import VaccineDTO
 
 
-class _Repository:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class _Repository(metaclass=Singleton):
     def __init__(self):
         self._conn = sqlite3.connect(".\\database.db")
         self.clean()
@@ -54,6 +63,12 @@ class _Repository:
             """)
         self._conn.commit()
         pass
+
+    def dates_sorted(self):
+        cur=self._conn.cursor()
+        cur.execute("""SELECT id FROM vaccines ORDER BY date ASC""")
+        out = list(cur.fetchall())
+        return out
 
     def get_config_file(self, config_file_path, vaccines1, suppliers1, clinics1, logistics1):
         with open(".\\"+config_file_path, "r", encoding ="utf-8") as configFile:
@@ -100,8 +115,29 @@ class _Repository:
         self.get_config_file("config.txt", Session.Vaccines, Session.Suppliers, Session.Clinics, Session.Logistics)
         pass
 
+    def total_vaccines(self):
+        cur = self._conn.cursor()
+        cur.execute("""SELECT sum(quantity) FROM vaccines """)
+        out = cur.fetchall()
+        return out
 
+    def total_demand(self):
+        cur = self._conn.cursor()
+        cur.execute("""SELECT sum(demand) FROM clinics""")
+        out = cur.fetchall()
+        return out
 
+    def total_received(self):
+        cur = self._conn.cursor()
+        cur.execute("""SELECT sum(count_received) FROM logistics""")
+        out = cur.fetchall()
+        return out
+
+    def total_sent(self):
+        cur = self._conn.cursor()
+        cur.execute("""SELECT sum(count_sent) FROM logistics""")
+        out = cur.fetchall()
+        return out
 
 
 

@@ -14,7 +14,7 @@ class _ClinicDAO(metaclass=Singleton):
     def __init__(self, conn):
         self._conn = conn
 
-    def get_clinic(self, clinic_id):
+    def find(self, clinic_id):
         cur = self._conn.cursor()
         cur.execute("""SELECT * FROM clinics where id = ? """, (int(clinic_id)))
         return list(cur.fetchone())
@@ -26,8 +26,13 @@ class _ClinicDAO(metaclass=Singleton):
             self._conn.commit()
         except sqlite3.Error:
             print("error in clinic")
-
     pass
+
+    def update(self, clinicDTO):
+        cur = self._conn.cursor()
+        cur.execute("""UPDATE clinics SET demand = (?) WHERE id = (?)""",
+                    (clinicDTO.demand, clinicDTO.id))
+        self._conn.commit()
 
 
 

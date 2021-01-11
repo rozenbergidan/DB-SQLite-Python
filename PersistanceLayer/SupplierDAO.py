@@ -9,11 +9,11 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class _Supplier(metaclass=Singleton):
+class _SupplierDAO(metaclass=Singleton):
     def __init__(self, conn):
         self._conn = conn
 
-    def get_supplier(self, supplier_id):
+    def find(self, supplier_id):
         cur = self._conn.cursor()
         cur.execute("""SELECT * FROM suppliers where id = ? """, (int(supplier_id)))
         return list(cur.fetchone())
@@ -25,5 +25,4 @@ class _Supplier(metaclass=Singleton):
             self._conn.commit()
         except sqlite3.Error:
             print("error in supplier")
-
     pass
