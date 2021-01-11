@@ -1,7 +1,13 @@
 import sqlite3
+<<<<<<< HEAD
 from PersistanceLayer.ClinicDAO import _ClinicDAO
 from PersistanceLayer.LogisticDAO import _LogisticDAO
 from PersistanceLayer.SupplierDAO import _SupplierDAO
+=======
+from PersistanceLayer.Vaccines import _Vaccines
+from PersistanceLayer.LogisticDAO import _LogisticDAO
+from PersistanceLayer.Vaccines import _Vaccines
+>>>>>>> 7165faebdc90c8ee1729807b18c1374615d6fc87
 
 
 class _Repository:
@@ -68,6 +74,7 @@ class _Repository:
             # print(clinics)
             # print(logistics)
 
+<<<<<<< HEAD
             # for line in rows[vaccines[0]:1+vaccines[1]]:
             #     vacDao = VaccineDAO()
             #     vacDao.insert_vaccine(line.split(","))
@@ -78,6 +85,21 @@ class _Repository:
             for line in rows[clinics[0]:1+clinics[1]]:
                 clinDao = _ClinicDAO(self._conn)
                 clinDao.insert(line.split(","))
+=======
+            for line in rows[logistics[0]:1+logistics[1]]:
+                logDao = _LogisticDAO()
+                logDao.insert(line.split(","))
+
+            for line in rows[vaccines[0]:1+vaccines[1]]:
+                vac = _Vaccines(self._conn)
+                vac.insert(line.split(","))
+            for line in rows[suppliers[0]:1+suppliers[1]]:
+                supDao = SupplierDAO()
+                supDao.insert_supplier(line.split(","))
+            for line in rows[clinics[0]:1+clinics[1]]:
+                clinDao = ClinicDAO()
+                clinDao.insert_clinic(line.split(","))
+>>>>>>> 7165faebdc90c8ee1729807b18c1374615d6fc87
 
             for line in rows[suppliers[0]:1+suppliers[1]]:
                 supDao = _SupplierDAO(self._conn)
