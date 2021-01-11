@@ -49,6 +49,7 @@ class Session:
                             vaccine.quantity= str(int(vaccine.quantity) - int(amount))
                             _VaccineDAO().update(vaccine)
                             amount=-1
+                            break
                         else:
                             amount = str(int(amount) - int(vaccine.quantity))
                             del self.Vaccines[vaccine.id]
