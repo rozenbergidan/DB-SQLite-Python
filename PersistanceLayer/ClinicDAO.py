@@ -1,6 +1,6 @@
 class ClinicDAO:
-    def __init__(self,conn):
-        self._conn=conn
+    def __init__(self, conn):
+        self._conn= conn
 
     def get_clinic(self, clinic_id):
         cur = self._conn.cursor()
