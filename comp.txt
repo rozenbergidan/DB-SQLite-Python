@@ -1,0 +1,55 @@
+VaccineDTO
+	id integer Primary Key
+	date Date not null
+	supplier integer Reference Supplier(id)
+	quantitiy integer not null
+
+supplierDto
+	id integet Primary KEy
+	name string not null
+	logistic integer reference Logistic(id)
+
+clinicDTO
+	id integer Primary Key
+	location string not null
+	demand integer not null
+	logistic integer Regerence Logistic(id)
+
+logisticDTO
+	id integer Primary Key
+	name string not null
+	count_sent integer not null
+	count_received integer not null
+
+
+CONFIG FILE looks like this:
+<#vaccinves>,<#suppliers>,<#clinics>,<#logistics>     -- # number of entries of each entity
+<vaccines>		-- format Vaccine: id, date, supplier, quantity
+<supplier>		-- format Supplier: id, name, logistic
+<clinics>		-- format Clinics: id, location, demand, logistic
+<logistics>		-- format Logistics: id, name, count_sent, count_received
+
+Orders:
+
+there are 2 types of orders: Receive and Send.
+Receive Shipment -> format: name, amount, date
+proccess - Updates Vaccine_T on quantity and date, Update Supplier_T count_received where name = Shippment_name 
+
+Send Shipment -> format: location, amount
+process - Remove(Update) Shipment_amount from Shipment_location's demend (clinic). if a Vaccine run out of quantity it is deleted from the DB.
+	if we try to send more then quantity, if the clinic's demend is bigger then the vaccine quantity we will take from other vaccines as well
+	In addition, we Increase(Update) the relevent logistic's count_send with Shippment_amount
+
+
+
+Orders file: 
+Orders will be read from the orders.txt file, each line will be a single order.
+order of 3 items will be a Receive Shipment, and look like:	name, amount, date
+order of 2 items will be Send Shipment, and look like:		location, amount
+
+Output file:
+after each order is executed, it is written in the output file.
+this means that if we have 5 orders, we will have 5 lines in the output.txt file.
+the format is stored like this:
+
+total_inventoy, total_demend, total_received, total sent
