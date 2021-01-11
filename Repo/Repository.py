@@ -1,11 +1,22 @@
 import sqlite3
+from PersistanceLayer.ClinicDAO import _ClinicDAO
+from PersistanceLayer.LogisticDAO import _LogisticDAO
+from PersistanceLayer.SupplierDAO import _SupplierDAO
 
 
 class _Repository:
     def __init__(self):
         self._conn = sqlite3.connect(".\\database.db")
-        # self.get_config_file("config.txt")
+        self.clean()
         # self.create_tables()
+        # self.get_config_file("config.txt")
+
+    def clean(self):
+        cur = self._conn.cursor()
+        cur.execute("""DROP TABLE vaccines;""")
+        cur.execute("""DROP TABLE suppliers;""")
+        cur.execute("""DROP TABLE clinics;""")
+        cur.execute("""DROP TABLE logistics;""")
 
     def _close(self):
         self._conn.commit()
@@ -52,24 +63,25 @@ class _Repository:
             clinics = (1+suppliers[1],  suppliers[1]+int(data[2]))
             logistics = (1+clinics[1], clinics[1]+int(data[3]))
 
-            print(vaccines)
-            print(suppliers)
-            print(clinics)
-            print(logistics)
+            # print(vaccines)
+            # print(suppliers)
+            # print(clinics)
+            # print(logistics)
 
-            for line in rows[vaccines[0]:1+vaccines[1]]:
-                vacDao = VaccineDAO()
-                vacDao.insert_vaccine(line.split(","))
-            for line in rows[suppliers[0]:1+suppliers[1]]:
-                supDao = SupplierDAO()
-                supDao.insert_supplier(line.split(","))
-            for line in rows[clinics[0]:1+clinics[1]]:
-                clinDao = ClinicDAO()
-                clinDao.insert_clinic(line.split(","))
+            # for line in rows[vaccines[0]:1+vaccines[1]]:
+            #     vacDao = VaccineDAO()
+            #     vacDao.insert_vaccine(line.split(","))
             for line in rows[logistics[0]:1+logistics[1]]:
-                logDao = LogistcDAO()
-                logDao.insert_logistic(line.split(","))
+                logDao = _LogisticDAO(self._conn)
+                logDao.insert(line.split(","))
 
+            for line in rows[clinics[0]:1+clinics[1]]:
+                clinDao = _ClinicDAO(self._conn)
+                clinDao.insert(line.split(","))
+
+            for line in rows[suppliers[0]:1+suppliers[1]]:
+                supDao = _SupplierDAO(self._conn)
+                supDao.insert(line.split(","))
             pass
 
 
