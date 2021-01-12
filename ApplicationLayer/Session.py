@@ -26,7 +26,7 @@ class Session:
         repo = _Repository()
         repo.load_project(self)
         self.get_orders_file("orders.txt")
-        open(".\\output.txt","w", encoding="utf-8").close()
+        open("output.txt","w", encoding="utf-8").close()
 
 
     pass
@@ -79,7 +79,7 @@ class Session:
         pass
 
     def get_orders_file(self, orders_file_path):
-        with open(".\\" + orders_file_path, "r", encoding="utf-8") as ordersFile:
+        with open(orders_file_path, "r", encoding="utf-8") as ordersFile:
             rows = ordersFile.read().split("\n")
             for row in rows:
                 data = row.split(",")
@@ -88,7 +88,7 @@ class Session:
 
 
     def write_to_output_file(self):
-        with open(".\\output.txt","a", encoding="utf-8") as outputFile:
+        with open("output.txt","a", encoding="utf-8") as outputFile:
             invent = self.get_total_inventory()[0]
             demand = self.get_total_demand()[0]
             received = self.get_total_received()[0]

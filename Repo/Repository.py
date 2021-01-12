@@ -71,7 +71,7 @@ class _Repository(metaclass=Singleton):
         return out
 
     def get_config_file(self, config_file_path, vaccines1, suppliers1, clinics1, logistics1):
-        with open(".\\"+config_file_path, "r", encoding ="utf-8") as configFile:
+        with open(config_file_path, "r", encoding ="utf-8") as configFile:
             rows = configFile.read().split("\n")
             data = rows[0].split(",")
 
