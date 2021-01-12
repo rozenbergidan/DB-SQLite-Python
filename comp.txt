@@ -52,4 +52,4 @@ after each order is executed, it is written in the output file.
 this means that if we have 5 orders, we will have 5 lines in the output.txt file.
 the format is stored like this:
 
-total_inventoy, total_demend, total_received, total sent
+total_inventoy, total_demend, total_received, total_sent

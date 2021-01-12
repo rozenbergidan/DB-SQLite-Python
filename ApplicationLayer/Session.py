@@ -26,6 +26,9 @@ class Session:
         repo = _Repository()
         repo.load_project(self)
         self.get_orders_file("orders.txt")
+        open(".\\output.txt","w", encoding="utf-8").close()
+
+
     pass
 
     def run(self):
@@ -43,7 +46,7 @@ class Session:
                 logistic.count_sent= str(int(logistic.count_sent) + int(amount))
                 _LogisticDAO().update_sent(logistic)
                 # removing inventory
-                while int(amount)>=0:
+                while int(amount)>0:
                     for vaccine in self.sorted_vaccines_by_Date():
                         if int(vaccine.quantity) >= int(amount):
                             vaccine.quantity= str(int(vaccine.quantity) - int(amount))
