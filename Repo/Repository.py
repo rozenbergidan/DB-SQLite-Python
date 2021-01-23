@@ -20,7 +20,7 @@ class Singleton(type):
 
 class _Repository(metaclass=Singleton):
     def __init__(self):
-        self._conn = sqlite3.connect(".\\database.db")
+        self._conn = sqlite3.connect('database.db')
         self.clean()
         self.create_tables()
 
