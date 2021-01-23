@@ -20,7 +20,7 @@ class Singleton(type):
 
 class _Repository(metaclass=Singleton):
     def __init__(self):
-        self._conn = sqlite3.connect(".\\database.db")
+        self._conn = sqlite3.connect("database.db")
         self.clean()
         self.create_tables()
 
@@ -104,6 +104,10 @@ class _Repository(metaclass=Singleton):
 
             for line in rows[vaccines[0]:1+vaccines[1]]:
                 data = line.split(",")
+                # TODO: i changed here
+                jibrish = data[1]
+                jibrish = jibrish.replace("גˆ’", "-")
+                data[1]=jibrish
                 vcn = VaccineDTO(data[0], data[1], data[2], data[3])
                 vaccines1[vcn.id]=vcn
                 vacDao = _VaccineDAO(self._conn)
@@ -111,8 +115,8 @@ class _Repository(metaclass=Singleton):
 
             pass
 
-    def load_project(self, Session):
-        self.get_config_file("config.txt", Session.Vaccines, Session.Suppliers, Session.Clinics, Session.Logistics)
+    def load_project(self, Session, config):
+        self.get_config_file(config, Session.Vaccines, Session.Suppliers, Session.Clinics, Session.Logistics)
         pass
 
     def total_vaccines(self):

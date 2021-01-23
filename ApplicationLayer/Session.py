@@ -12,8 +12,8 @@ class Session:
     Logistics = {}
     Orders = []
 
-    def __init__(self):
-        self.load_data()
+    def __init__(self, config, orders, output):
+        self.load_data(config, orders, output)
 
     def find_id(self):
         max=0
@@ -22,11 +22,11 @@ class Session:
                 max = int(key)
         return max+1
 
-    def load_data(self):
+    def load_data(self, config, orders, output):
         repo = _Repository()
-        repo.load_project(self)
-        self.get_orders_file("orders.txt")
-        open("output.txt","w", encoding="utf-8").close()
+        repo.load_project(self, config)
+        self.get_orders_file(orders)
+        open(output,"w", encoding="utf-8").close()
 
 
     pass
@@ -52,17 +52,23 @@ class Session:
                             vaccine.quantity= str(int(vaccine.quantity) - int(amount))
                             _VaccineDAO().update(vaccine)
                             amount=-1
+                            # self.write_to_output_file()
                             break
                         else:
                             amount = str(int(amount) - int(vaccine.quantity))
                             del self.Vaccines[vaccine.id]
                             _VaccineDAO().delete(vaccine)
+                            # self.write_to_output_file()
                 # finished reducing the inventory
             elif len(order)==3:
                 # getting the order received data
                 sup_name=order[0]
                 amount=order[1]
-                date=order[2]
+                # TODO: I changed here
+                jibrish = order[2]
+                jibrish = jibrish.replace("גˆ’", "-")
+                order[2] = jibrish
+                date = order[2]
                 # getting the supplier's id who delivered the order
                 supplier = self.get_supplier_by_name(sup_name)
                 # getting the next unused vaccine id
